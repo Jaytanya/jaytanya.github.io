@@ -54,8 +54,10 @@ function request_chembl(url, value, callback) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             callback(xhttp.responseText);
         } else {
+            var error = document.getElementById("error");
+            error.style.display = "block";
             var error = document.getElementById("error-text");
-            error.innerHTML = "ChEMBL has failed to respond. Status: " + xhttp.status + " Message" + xhttp.responseText;
+            error.innerHTML = "ChEMBL has failed to respond. Status: " + xhttp.status;
         }
     }
     xhttp.open("GET", url + value);
@@ -281,16 +283,23 @@ window.onload = function() {
             fr.readAsText (file, "UTF-8");
             fr.onload = function (evt) { document.getElementById("openFile").innerHtml = evt.target.result;
                 var smiles = evt.target.result;
-                if (smiles === "") {
-                    var error = document.getElementById("error-text");
-                    error.innerHTML('File is Empty. Kindly refresh and reload a file with a SMILES string')
-                }
                 console.log("Input SMILES: "+smiles);
-                request_chembl(smiles2ctab, encoder(smiles), get_xyz)
+                if (smiles === "") {
+                    var error = document.getElementById("error");
+                    error.style.display = "block";
+                    var error = document.getElementById("error-text");
+                    error.innerHTML = 'File is Empty. Kindly reload a file with a SMILES string';
+                }
+                else {
+                    request_chembl(smiles2ctab, encoder(smiles), get_xyz);
+                }
 
             }
             fr.onerror = function (evt) { document.getElementById("openFile").innerHtml = "error reading file";
-                console.log ("error reading file");
+                var error = document.getElementById("error");
+                error.style.display = "block";
+                var error = document.getElementById("error-text");
+                error.innerHTML = "error reading file";
             }
         }
     });
