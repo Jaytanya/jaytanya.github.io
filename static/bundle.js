@@ -15941,11 +15941,6 @@ function request_chembl(url, value, callback) {
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             callback(xhttp.responseText);
-        } else {
-            var error = document.getElementById("error");
-            error.style.display = "block";
-            var error = document.getElementById("error-text");
-            error.innerHTML = "ChEMBL has failed to respond. Status: " + xhttp.status;
         }
     }
     xhttp.open("GET", url + value);
